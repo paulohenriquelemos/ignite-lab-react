@@ -9,6 +9,7 @@ interface LessonProps {
   slug: string;
   availableAt: Date;
   type: 'live' | 'class'
+  onRequestClose?: () => void;
 }
 
 export function Lesson(props: LessonProps) {
@@ -22,11 +23,9 @@ export function Lesson(props: LessonProps) {
 
   const isActiveLesson = slug === props.slug
 
-  // console.log(slug)
-
 /* quando está usando o react-router-dom, troca-se o <a> por <Link> */
   return (
-    <Link to={`/event/lesson/${props.slug}`} className="group">
+    <Link onClick={props.onRequestClose} to={`/event/lesson/${props.slug}`} className="group">
       <span className="text-gray-300">
         {availableDateFormatted}
       </span>

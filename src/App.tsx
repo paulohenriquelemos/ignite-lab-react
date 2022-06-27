@@ -3,7 +3,6 @@ import { BrowserRouter } from "react-router-dom"
 import { client } from "./lib/apollo"
 import { Router } from "./Router"
 
-
 /*
 yarn create vite . --template react-ts
 yarn
@@ -26,6 +25,9 @@ import '@vime/core/themes/default.css'
 
 yarn add react-router-dom
 
+converte svg para jsx
+https://svg2jsx.com/
+
 yarn add react-youtube // precisa desinstalar
 
 yarn add react-player // precisa desinstalar
@@ -37,6 +39,9 @@ https://www.graphql-code-generator.com/
 yarn add @graphql-codegen/typescript @graphql-codegen/typescript-operations @graphql-codegen/typescript-react-apollo -D
 yarn add @graphql-codegen/cli -D
 yarn codegen
+
+// yarn add react-modal
+// yarn add @types/react-modal -D
 
 */
 function App() {

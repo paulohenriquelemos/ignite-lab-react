@@ -1,18 +1,24 @@
 import { useState, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
+import { Footer } from "../../components/Footer";
 import { Logo } from "../../components/Logo";
-import { useCreateSubscriberMutation } from "../../graphql/generated";
+import { useCreateSubscriberMutation, useGetSlugQuery } from "../../graphql/generated";
 
 export function Subscribe() {
   const navigate = useNavigate()
-
+  
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
-
+  
   const [createSubscriber, { loading }] = useCreateSubscriberMutation()
+  const { data } = useGetSlugQuery()
 
   async function handleSubscribe(event: FormEvent) {
     event.preventDefault()
+
+    if(name.trim().length === 0 || email.trim().length === 0) {
+      return alert('Digite Nome e E-mail válidos')
+    }
     
     await createSubscriber({
       variables: {
@@ -20,17 +26,21 @@ export function Subscribe() {
         email,
       }
     })
-    navigate('/event')
+    navigate(`/event/lesson/${data?.lessons[0].slug}`)
   }
 
   return(
     <div className="min-h-screen bg-blur bg-cover bg-no-repeat flex flex-col
-      items-center"
+      items-center justify-between"
     >
-      <div className="w-full max-w-[1100px] flex items-center justify-between mt-20
-        mx-auto"
+      <div
+        className="w-full max-w-[1100px] md:flex items-center justify-between
+        mt-6 md:mt-14 mx-auto px-4 gap-6"
       >
-        <div className="max-w-[640px]">
+        <div
+          className="max-w-[640px] flex flex-col items-center justify-center
+          text-center mb-8 md:mb-0"
+        >
           <Logo />
           <h1 className="mt-8 text-[2.5rem] leading-tight">
             Construa uma <strong className="text-blue-500">aplicação completa</strong>, do zero, 
@@ -48,13 +58,15 @@ export function Subscribe() {
           </strong>
           <form onSubmit={handleSubscribe} className="flex flex-col gap-2 w-full">
             <input
-              className="bg-gray-900 rounded px-5 h-14"
+              className="bg-gray-900 rounded px-5 h-14 outline-none
+                border border-transparent focus:border focus:border-green-500"
               type="text"
               placeholder="Seu nome completo"
               onChange={event => setName(event.target.value)}
             />
             <input
-              className="bg-gray-900 rounded px-5 h-14"
+              className="bg-gray-900 rounded px-5 h-14 outline-none
+              border border-transparent focus:border focus:border-green-500"
               type="email"
               placeholder="Digite seu e-mail"
               onChange={event => setEmail(event.target.value)}
@@ -70,7 +82,8 @@ export function Subscribe() {
           </form>
         </div>
       </div>
-      <img src="/images/code-mockup.png" className="mt-10" alt="" />
+      <img src="/images/code-mockup.png" className="px-4" alt="Imagem de fundo" />
+      <Footer />
     </div>
   )
 }

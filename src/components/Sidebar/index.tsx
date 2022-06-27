@@ -2,24 +2,24 @@ import { useGetLessonsQuery } from "../../graphql/generated";
 
 import { Lesson } from "../Lesson";
 
-// interface GetLessonsQueryResponse {
-//   lessons: {
-//     id: string;
-//     title: string;
-//     slug: string;
-//     availableAt: Date;
-//     lessonType: 'live' | 'class';
-//   }[] /* dessa forma é para tipar o retorno como um array de objetos */
-// }
+interface SidebarModalProps {
+  modal?: boolean;
+  onRequestClose?: () => void;
+}
 
-export function Sidebar() {
-  // const { data } = useQuery<GetLessonsQueryResponse>(GET_LESSONS_QUERY)
+export function Sidebar({ modal, onRequestClose }: SidebarModalProps) {
   const { data } = useGetLessonsQuery()
 
-  // console.log(data)
+  const genericAside = 'w-[345px] bg-gray-700 p-6 border-l border-gray-600'
 
   return (
-    <aside className="w-[345px] bg-gray-700 p-6 border-l border-gray-600">
+    <aside 
+      className={`${genericAside} 
+      ${!modal 
+        ? 'hidden md:block' 
+        : 'z-50 absolute top-[74px] right-0 border w-[100%] sm:w-[345px]'}
+      `}
+    >
       <span className="font-bold text-2xl pb-6 mb-6 border-b border-gray-500 block">
         Cronograma das aulas
       </span>
@@ -33,6 +33,7 @@ export function Sidebar() {
               slug={lesson.slug}
               availableAt={new Date(lesson.availableAt)}
               type={lesson.lessonType}
+              onRequestClose={onRequestClose}
             />
           )
         })}
